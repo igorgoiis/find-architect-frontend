@@ -1,0 +1,13 @@
+query GetUsers {
+  users {
+    id
+    name
+    email
+    phone
+    role
+    gender
+    birdDate
+    createdAt
+    updatedAt
+  }
+}
