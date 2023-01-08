@@ -1,13 +1,15 @@
-import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { createContext, ReactNode, useState } from 'react';
-import { useLoginMutation, User } from '../graphql/generated/graphql';
-import { Role } from '../shared/models/enums/roles.enum';
+import {
+  useCreateUserMutation,
+  useLoginMutation,
+} from '../graphql/generated/graphql';
 import { IUser } from '../shared/models/user.model';
 import {
   AuthValuesType,
   ErrCallbackType,
   LoginParams,
+  RegisterParams,
   SuccessCallbackType,
 } from './types';
 
@@ -20,11 +22,11 @@ const defaultProvider: AuthValuesType = {
   setUser: () => null,
   // loading: true,
   // setLoading: () => Boolean,
-  // isInitialized: false,
+  isInitialized: false,
+  setIsInitialized: () => Boolean,
   login: () => Promise.resolve(),
-  // logout: () => Promise.resolve(),
-  // setIsInitialized: () => Boolean,
-  // register: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+  register: () => Promise.resolve(),
 };
 
 const AuthContext = createContext(defaultProvider);
@@ -33,9 +35,9 @@ function AuthProvider({ children }: Props) {
   // ** States
   const [user, setUser] = useState<IUser | null>(defaultProvider.user);
   // const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
-  // const [isInitialized, setIsInitialized] = useState<boolean>(
-  //   defaultProvider.isInitialized,
-  // );
+  const [isInitialized, setIsInitialized] = useState<boolean>(
+    defaultProvider.isInitialized,
+  );
 
   // ** Hooks
   const router = useRouter();
@@ -44,6 +46,7 @@ function AuthProvider({ children }: Props) {
       localStorage.setItem('@user:token', login.token);
     },
   });
+  const [createUser] = useCreateUserMutation();
 
   const handleLogin = async (
     params: LoginParams,
@@ -74,10 +77,36 @@ function AuthProvider({ children }: Props) {
     }
   };
 
+  const handleLogout = () => {
+    setUser(null);
+    setIsInitialized(false);
+    window.localStorage.removeItem('@user:token');
+    router.push('/login');
+  };
+
+  const handleRegister = async (
+    params: RegisterParams,
+    successCallback?: SuccessCallbackType,
+    errorCallback?: ErrCallbackType,
+  ) => {
+    try {
+      await createUser({
+        variables: { data: params },
+      });
+      if (successCallback) successCallback(true);
+    } catch (error: any) {
+      if (errorCallback) errorCallback(error);
+    }
+  };
+
   const values = {
     user,
     setUser,
+    isInitialized,
+    setIsInitialized,
     login: handleLogin,
+    logout: handleLogout,
+    register: handleRegister,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

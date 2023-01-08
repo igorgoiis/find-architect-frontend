@@ -1,3 +1,5 @@
+import { Gender } from '../shared/models/enums/gender.enum';
+import { Role } from '../shared/models/enums/roles.enum';
 import { IUser } from '../shared/models/user.model';
 
 export type ErrCallbackType = (err: { [key: string]: string }) => void;
@@ -10,19 +12,20 @@ export type LoginParams = {
 };
 
 export type RegisterParams = {
-  username: string;
-  cnpj: string;
-  phone: string;
   email: string;
+  name: string;
+  phone: string;
+  gender: Gender;
+  birdDate: Date;
+  role: Role;
   password: string;
-  confirmPassword: string;
 };
 
 export type AuthValuesType = {
   // loading: boolean;
   // setLoading: (value: boolean) => void;
-  // isInitialized: boolean;
-  // setIsInitialized: (value: boolean) => void;
+  isInitialized: boolean;
+  setIsInitialized: (value: boolean) => void;
   user: IUser | null;
   setUser: (value: IUser | null) => void;
   login: (
@@ -30,6 +33,10 @@ export type AuthValuesType = {
     successCallback?: SuccessCallbackType,
     errorCallback?: ErrCallbackType,
   ) => void;
-  // logout: () => void;
-  // register: (params: RegisterParams, errorCallback?: ErrCallbackType) => void;
+  logout: () => void;
+  register: (
+    params: RegisterParams,
+    successCallback?: SuccessCallbackType,
+    errorCallback?: ErrCallbackType,
+  ) => void;
 };
