@@ -1,10 +1,21 @@
-import { Button, Center, Flex, Link, Stack } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Center,
+  Collapse,
+  Flex,
+  Link,
+  Stack,
+} from '@chakra-ui/react';
 import Head from 'next/head';
 import { Input } from '../../components/Form/Input';
 import { useForm } from 'react-hook-form';
 import { FieldError, SubmitHandler } from 'react-hook-form/dist/types';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuth } from '../../hooks/useAuth';
+import { useState } from 'react';
 
 type SignInFormData = {
   email: string;
@@ -21,16 +32,33 @@ const signInFormSchema = yup.object().shape({
 });
 
 function Login() {
+  const { login } = useAuth();
+
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>({
     resolver: yupResolver(signInFormSchema),
   });
 
-  const handleSingIn: SubmitHandler<SignInFormData> = (data) => {
-    console.log({ data });
+  const handleSingIn: SubmitHandler<SignInFormData> = (value, e) => {
+    e?.preventDefault();
+    login(
+      value,
+      () => {
+        console.log('Logou');
+        setAlertErrorIsOpen(false);
+      },
+      () => {
+        setError('email', { type: 'manual' });
+        setError('password', { type: 'manual' });
+        setAlertErrorIsOpen(true);
+      },
+    );
   };
 
   return (
@@ -49,6 +77,12 @@ function Login() {
           flexDir="column"
           onSubmit={handleSubmit(handleSingIn)}
         >
+          <Collapse in={alertErrorIsOpen} animateOpacity>
+            <Alert status="error" variant="left-accent" mb={6}>
+              <AlertIcon />
+              E-mail ou Senha incorretos
+            </Alert>
+          </Collapse>
           <Stack spacing={4}>
             <Input
               type="email"
@@ -73,7 +107,9 @@ function Login() {
             </Button>
           </Stack>
           <Center mt={8}>
-            <Link fontSize="lg">Cadastre-se</Link>
+            <Link href="/register" fontSize="lg">
+              Cadastre-se
+            </Link>
           </Center>
         </Flex>
       </Flex>

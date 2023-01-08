@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -45,7 +39,7 @@ export type CreateUserInput = {
 
 export enum Gender {
   F = 'F',
-  M = 'M',
+  M = 'M'
 }
 
 export type Mutation = {
@@ -56,17 +50,21 @@ export type Mutation = {
   updateUser: User;
 };
 
+
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
 };
+
 
 export type MutationDeleteUserArgs = {
   id: Scalars['String'];
 };
 
+
 export type MutationLoginArgs = {
   data: AuthInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
@@ -81,13 +79,16 @@ export type Query = {
   users: Array<User>;
 };
 
+
 export type QueryUserByEmailArgs = {
   email: Scalars['String'];
 };
 
+
 export type QueryUserByIdArgs = {
   id: Scalars['String'];
 };
+
 
 export type QueryUserByRoleArgs = {
   role: Scalars['String'];
@@ -95,7 +96,7 @@ export type QueryUserByRoleArgs = {
 
 export enum Role {
   Architect = 'ARCHITECT',
-  Client = 'CLIENT',
+  Client = 'CLIENT'
 }
 
 export type UpdateUserInput = {
@@ -121,27 +122,18 @@ export type User = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type LoginMutationVariables = Exact<{
+  data: AuthInput;
+}>;
 
-export type GetUsersQuery = {
-  __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    role: Role;
-    gender: Gender;
-    birdDate: any;
-    createdAt: any;
-    updatedAt: any;
-  }>;
-};
 
-export const GetUsersDocument = gql`
-  query GetUsers {
-    users {
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthModel', token: string, user: { __typename?: 'User', id: string, name: string, email: string, phone: string, role: Role, gender: Gender, birdDate: any, createdAt: any, updatedAt: any } } };
+
+
+export const LoginDocument = gql`
+    mutation Login($data: AuthInput!) {
+  login(data: $data) {
+    user {
       id
       name
       email
@@ -152,50 +144,33 @@ export const GetUsersDocument = gql`
       createdAt
       updatedAt
     }
+    token
   }
-`;
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
- * __useGetUsersQuery__
+ * __useLoginMutation__
  *
- * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useGetUsersQuery({
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function useGetUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(
-    GetUsersDocument,
-    options,
-  );
-}
-export function useGetUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetUsersQuery,
-    GetUsersQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(
-    GetUsersDocument,
-    options,
-  );
-}
-export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
-export type GetUsersLazyQueryHookResult = ReturnType<
-  typeof useGetUsersLazyQuery
->;
-export type GetUsersQueryResult = Apollo.QueryResult<
-  GetUsersQuery,
-  GetUsersQueryVariables
->;
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;

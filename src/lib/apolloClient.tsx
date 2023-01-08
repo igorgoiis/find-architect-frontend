@@ -1,24 +1,14 @@
 import {
   ApolloClient,
-  ApolloProvider,
   createHttpLink,
   from,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
-import { GetServerSidePropsContext, NextPage } from 'next';
+import { setContext } from '@apollo/client/link/context';
+import { GetServerSidePropsContext } from 'next';
 
 export type ApolloClientContext = GetServerSidePropsContext;
-
-export const withApollo = (Component: NextPage) => {
-  return function Provider(props: any) {
-    return (
-      <ApolloProvider client={getApolloClient(props.apolloState)}>
-        <Component {...props} />
-      </ApolloProvider>
-    );
-  };
-};
 
 export function getApolloClient(ssrCache?: NormalizedCacheObject) {
   const httpLink = createHttpLink({
@@ -26,10 +16,20 @@ export function getApolloClient(ssrCache?: NormalizedCacheObject) {
     fetch,
   });
 
+  const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('AUTH_TOKEN');
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
+
   const cache = new InMemoryCache().restore(ssrCache ?? {});
 
   return new ApolloClient({
-    link: from([httpLink]),
+    link: from([authLink.concat(httpLink)]),
     cache,
   });
 }
