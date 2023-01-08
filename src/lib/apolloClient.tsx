@@ -17,7 +17,7 @@ export function getApolloClient(ssrCache?: NormalizedCacheObject) {
   });
 
   const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('AUTH_TOKEN');
+    const token = localStorage.getItem('@user:token');
     return {
       headers: {
         ...headers,

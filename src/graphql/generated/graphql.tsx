@@ -136,6 +136,13 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthModel', token: string, user: { __typename?: 'User', id: string, name: string, email: string, phone: string, role: Role, gender: Gender, birdDate: any, createdAt: any, updatedAt: any } } };
 
+export type GetUserByRoleQueryVariables = Exact<{
+  role: Scalars['String'];
+}>;
+
+
+export type GetUserByRoleQuery = { __typename?: 'Query', userByRole: Array<{ __typename?: 'User', id: string, name: string }> };
+
 
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
@@ -214,3 +221,39 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const GetUserByRoleDocument = gql`
+    query getUserByRole($role: String!) {
+  userByRole(role: $role) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetUserByRoleQuery__
+ *
+ * To run a query within a React component, call `useGetUserByRoleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByRoleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByRoleQuery({
+ *   variables: {
+ *      role: // value for 'role'
+ *   },
+ * });
+ */
+export function useGetUserByRoleQuery(baseOptions: Apollo.QueryHookOptions<GetUserByRoleQuery, GetUserByRoleQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByRoleQuery, GetUserByRoleQueryVariables>(GetUserByRoleDocument, options);
+      }
+export function useGetUserByRoleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByRoleQuery, GetUserByRoleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByRoleQuery, GetUserByRoleQueryVariables>(GetUserByRoleDocument, options);
+        }
+export type GetUserByRoleQueryHookResult = ReturnType<typeof useGetUserByRoleQuery>;
+export type GetUserByRoleLazyQueryHookResult = ReturnType<typeof useGetUserByRoleLazyQuery>;
+export type GetUserByRoleQueryResult = Apollo.QueryResult<GetUserByRoleQuery, GetUserByRoleQueryVariables>;

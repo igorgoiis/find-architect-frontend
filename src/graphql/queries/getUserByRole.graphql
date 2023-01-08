@@ -1,0 +1,6 @@
+query getUserByRole ($role: String!) {
+  userByRole(role: $role) {
+    id
+    name
+  }
+}
