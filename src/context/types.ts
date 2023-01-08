@@ -24,7 +24,7 @@ export type AuthValuesType = {
   // isInitialized: boolean;
   // setIsInitialized: (value: boolean) => void;
   user: IUser | null;
-  // setUser: (value: IUser | null) => void;
+  setUser: (value: IUser | null) => void;
   login: (
     params: LoginParams,
     successCallback?: SuccessCallbackType,

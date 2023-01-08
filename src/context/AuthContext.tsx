@@ -17,8 +17,8 @@ type Props = {
 
 const defaultProvider: AuthValuesType = {
   user: null,
+  setUser: () => null,
   // loading: true,
-  // setUser: () => null,
   // setLoading: () => Boolean,
   // isInitialized: false,
   login: () => Promise.resolve(),
@@ -76,6 +76,7 @@ function AuthProvider({ children }: Props) {
 
   const values = {
     user,
+    setUser,
     login: handleLogin,
   };
 
