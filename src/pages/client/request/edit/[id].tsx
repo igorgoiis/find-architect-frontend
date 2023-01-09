@@ -14,17 +14,17 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { Header } from '../../../components/Header';
-import { Sidebar } from '../../../components/Sidebar';
+import { Header } from '../../../../components/Header';
+import { Sidebar } from '../../../../components/Sidebar';
 import {
   StatusService,
   useGetOneServiceRequestQuery,
   useGetUserByIdQuery,
   useUpdateServiceRequestMutation,
-} from '../../../graphql/generated/graphql';
+} from '../../../../graphql/generated/graphql';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from '../../../components/Form/Input';
+import { Input } from '../../../../components/Form/Input';
 import { FieldError, SubmitHandler } from 'react-hook-form/dist/types';
 import { RiSendPlaneFill } from 'react-icons/ri';
 import React from 'react';

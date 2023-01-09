@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 import { BadgeStatus } from '../../../components/BadgeStatus';
@@ -34,7 +34,6 @@ import { IUser } from '../../../shared/models/user.model';
 export default function ListRequestService() {
   const [architects, setArchitects] = useState<IUser[]>([]);
   const [requestIdDelete, setRequestIdDelete] = useState<string | null>(null);
-  const router = useRouter();
   const { user } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef<any>();
@@ -118,10 +117,6 @@ export default function ListRequestService() {
     }
   }
 
-  function handleRequest(id: string) {
-    router.replace(`request/edit/${id}`);
-  }
-
   return (
     <>
       <Head>
@@ -171,13 +166,15 @@ export default function ListRequestService() {
                             handleConfirmeDeleteRequest(request.id)
                           }
                         />
-                        <Button
-                          iconSpacing="-0.8"
-                          leftIcon={<RiEdit2Line fontSize="20" />}
-                          bgColor="transparent"
-                          _hover={{ bgColor: 'blue.500' }}
-                          onClick={() => handleRequest(request.id)}
-                        />
+                        <Link href={`request/edit/${request.id}`} passHref>
+                          <Button
+                            as="a"
+                            iconSpacing="-0.8"
+                            leftIcon={<RiEdit2Line fontSize="20" />}
+                            bgColor="transparent"
+                            _hover={{ bgColor: 'blue.500' }}
+                          />
+                        </Link>
                       </Td>
                     </Tr>
                   ))}
