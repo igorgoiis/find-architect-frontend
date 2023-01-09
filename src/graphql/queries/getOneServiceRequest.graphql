@@ -1,0 +1,10 @@
+query GetOneServiceRequest($id: String!) {
+  findOneServiceRequest(id: $id) {
+    id,
+    title,
+    description,
+    status,
+    cRequestId,
+    aRequestId
+  }
+}

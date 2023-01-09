@@ -1,0 +1,10 @@
+query GetAllServiceRequest ($id: String!){
+  findAllServiceRequest(id: $id) {
+    id,
+    title,
+    description,
+    status,
+    cRequestId,
+    aRequestId,
+  }
+}

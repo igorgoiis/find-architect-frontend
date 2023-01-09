@@ -57,7 +57,7 @@ export type Mutation = {
   createUser: User;
   deleteUser: Scalars['Boolean'];
   login: AuthModel;
-  removeServiceRequest: ServiceRequest;
+  removeServiceRequest: Scalars['Boolean'];
   updateServiceRequest: ServiceRequest;
   updateUser: User;
 };
@@ -110,6 +110,11 @@ export type Query = {
 };
 
 
+export type QueryFindAllServiceRequestArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryFindOneServiceRequestArgs = {
   id: Scalars['String'];
 };
@@ -151,9 +156,9 @@ export enum StatusService {
 }
 
 export type UpdateServiceRequestInput = {
-  description: Scalars['String'];
-  status: StatusService;
-  title: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<StatusService>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
@@ -195,6 +200,13 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string } };
 
+export type DeleteServiceRequestMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteServiceRequestMutation = { __typename?: 'Mutation', removeServiceRequest: boolean };
+
 export type LoginMutationVariables = Exact<{
   data: AuthInput;
 }>;
@@ -202,10 +214,32 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthModel', token: string, user: { __typename?: 'User', id: string, name: string, email: string, phone: string, role: Role, gender: Gender, birdDate: any, createdAt: any, updatedAt: any } } };
 
+export type UpdateServiceRequestMutationVariables = Exact<{
+  id: Scalars['String'];
+  data: UpdateServiceRequestInput;
+}>;
+
+
+export type UpdateServiceRequestMutation = { __typename?: 'Mutation', updateServiceRequest: { __typename?: 'ServiceRequest', id: string, title: string, description: string, status: StatusService, cRequestId?: string | null, aRequestId?: string | null } };
+
+export type GetAllServiceRequestQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetAllServiceRequestQuery = { __typename?: 'Query', findAllServiceRequest: Array<{ __typename?: 'ServiceRequest', id: string, title: string, description: string, status: StatusService, cRequestId?: string | null, aRequestId?: string | null }> };
+
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string }> };
+
+export type GetOneServiceRequestQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetOneServiceRequestQuery = { __typename?: 'Query', findOneServiceRequest: { __typename?: 'ServiceRequest', id: string, title: string, description: string, status: StatusService, cRequestId?: string | null, aRequestId?: string | null } };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -293,6 +327,37 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteServiceRequestDocument = gql`
+    mutation DeleteServiceRequest($id: String!) {
+  removeServiceRequest(id: $id)
+}
+    `;
+export type DeleteServiceRequestMutationFn = Apollo.MutationFunction<DeleteServiceRequestMutation, DeleteServiceRequestMutationVariables>;
+
+/**
+ * __useDeleteServiceRequestMutation__
+ *
+ * To run a mutation, you first call `useDeleteServiceRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteServiceRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteServiceRequestMutation, { data, loading, error }] = useDeleteServiceRequestMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteServiceRequestMutation(baseOptions?: Apollo.MutationHookOptions<DeleteServiceRequestMutation, DeleteServiceRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteServiceRequestMutation, DeleteServiceRequestMutationVariables>(DeleteServiceRequestDocument, options);
+      }
+export type DeleteServiceRequestMutationHookResult = ReturnType<typeof useDeleteServiceRequestMutation>;
+export type DeleteServiceRequestMutationResult = Apollo.MutationResult<DeleteServiceRequestMutation>;
+export type DeleteServiceRequestMutationOptions = Apollo.BaseMutationOptions<DeleteServiceRequestMutation, DeleteServiceRequestMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: AuthInput!) {
   login(data: $data) {
@@ -337,6 +402,85 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const UpdateServiceRequestDocument = gql`
+    mutation UpdateServiceRequest($id: String!, $data: UpdateServiceRequestInput!) {
+  updateServiceRequest(id: $id, data: $data) {
+    id
+    title
+    description
+    status
+    cRequestId
+    aRequestId
+  }
+}
+    `;
+export type UpdateServiceRequestMutationFn = Apollo.MutationFunction<UpdateServiceRequestMutation, UpdateServiceRequestMutationVariables>;
+
+/**
+ * __useUpdateServiceRequestMutation__
+ *
+ * To run a mutation, you first call `useUpdateServiceRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateServiceRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateServiceRequestMutation, { data, loading, error }] = useUpdateServiceRequestMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateServiceRequestMutation(baseOptions?: Apollo.MutationHookOptions<UpdateServiceRequestMutation, UpdateServiceRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateServiceRequestMutation, UpdateServiceRequestMutationVariables>(UpdateServiceRequestDocument, options);
+      }
+export type UpdateServiceRequestMutationHookResult = ReturnType<typeof useUpdateServiceRequestMutation>;
+export type UpdateServiceRequestMutationResult = Apollo.MutationResult<UpdateServiceRequestMutation>;
+export type UpdateServiceRequestMutationOptions = Apollo.BaseMutationOptions<UpdateServiceRequestMutation, UpdateServiceRequestMutationVariables>;
+export const GetAllServiceRequestDocument = gql`
+    query GetAllServiceRequest($id: String!) {
+  findAllServiceRequest(id: $id) {
+    id
+    title
+    description
+    status
+    cRequestId
+    aRequestId
+  }
+}
+    `;
+
+/**
+ * __useGetAllServiceRequestQuery__
+ *
+ * To run a query within a React component, call `useGetAllServiceRequestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllServiceRequestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllServiceRequestQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAllServiceRequestQuery(baseOptions: Apollo.QueryHookOptions<GetAllServiceRequestQuery, GetAllServiceRequestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllServiceRequestQuery, GetAllServiceRequestQueryVariables>(GetAllServiceRequestDocument, options);
+      }
+export function useGetAllServiceRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllServiceRequestQuery, GetAllServiceRequestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllServiceRequestQuery, GetAllServiceRequestQueryVariables>(GetAllServiceRequestDocument, options);
+        }
+export type GetAllServiceRequestQueryHookResult = ReturnType<typeof useGetAllServiceRequestQuery>;
+export type GetAllServiceRequestLazyQueryHookResult = ReturnType<typeof useGetAllServiceRequestLazyQuery>;
+export type GetAllServiceRequestQueryResult = Apollo.QueryResult<GetAllServiceRequestQuery, GetAllServiceRequestQueryVariables>;
 export const GetAllUsersDocument = gql`
     query GetAllUsers {
   users {
@@ -371,6 +515,46 @@ export function useGetAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
 export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export const GetOneServiceRequestDocument = gql`
+    query GetOneServiceRequest($id: String!) {
+  findOneServiceRequest(id: $id) {
+    id
+    title
+    description
+    status
+    cRequestId
+    aRequestId
+  }
+}
+    `;
+
+/**
+ * __useGetOneServiceRequestQuery__
+ *
+ * To run a query within a React component, call `useGetOneServiceRequestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOneServiceRequestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOneServiceRequestQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOneServiceRequestQuery(baseOptions: Apollo.QueryHookOptions<GetOneServiceRequestQuery, GetOneServiceRequestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOneServiceRequestQuery, GetOneServiceRequestQueryVariables>(GetOneServiceRequestDocument, options);
+      }
+export function useGetOneServiceRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOneServiceRequestQuery, GetOneServiceRequestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOneServiceRequestQuery, GetOneServiceRequestQueryVariables>(GetOneServiceRequestDocument, options);
+        }
+export type GetOneServiceRequestQueryHookResult = ReturnType<typeof useGetOneServiceRequestQuery>;
+export type GetOneServiceRequestLazyQueryHookResult = ReturnType<typeof useGetOneServiceRequestLazyQuery>;
+export type GetOneServiceRequestQueryResult = Apollo.QueryResult<GetOneServiceRequestQuery, GetOneServiceRequestQueryVariables>;
 export const GetUserByIdDocument = gql`
     query getUserById($id: String!) {
   userById(id: $id) {

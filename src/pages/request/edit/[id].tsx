@@ -18,15 +18,15 @@ import { Header } from '../../../components/Header';
 import { Sidebar } from '../../../components/Sidebar';
 import {
   StatusService,
-  useCreateServiceRequestMutation,
+  useGetOneServiceRequestQuery,
   useGetUserByIdQuery,
+  useUpdateServiceRequestMutation,
 } from '../../../graphql/generated/graphql';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from '../../../components/Form/Input';
 import { FieldError, SubmitHandler } from 'react-hook-form/dist/types';
 import { RiSendPlaneFill } from 'react-icons/ri';
-import { useAuth } from '../../../hooks/useAuth';
 import React from 'react';
 
 interface IRequestServiceForm {
@@ -41,21 +41,35 @@ const requestFormSchema = yup.object().shape({
   status: yup.string().optional().notRequired(),
 });
 
-export default function CreateRequestService() {
+export default function EditRequestService() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [createRequest] = useCreateServiceRequestMutation();
+  // const { user } = useAuth();
+  const [updateRequest] = useUpdateServiceRequestMutation();
   const toast = useToast();
   const toastIdRef = React.useRef<ToastId>();
 
-  const { id: userId } = router.query;
-  const { data } = useGetUserByIdQuery({
-    variables: { id: (userId as string) ?? '' },
+  const { id: requestId } = router.query;
+
+  const { data: request } = useGetOneServiceRequestQuery({
+    variables: { id: (requestId as string) ?? '' },
+    onCompleted: (data) => {
+      reset({
+        title: data.findOneServiceRequest.title,
+        description: data.findOneServiceRequest.description,
+      }),
+        refetch({ id: data.findOneServiceRequest.id });
+    },
+  });
+
+  const { data: architect, refetch } = useGetUserByIdQuery({
+    variables: { id: '' },
+    refetchWritePolicy: 'overwrite',
   });
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<IRequestServiceForm>({
     resolver: yupResolver(requestFormSchema),
@@ -68,21 +82,18 @@ export default function CreateRequestService() {
     e?.preventDefault();
 
     try {
-      await createRequest({
+      await updateRequest({
         variables: {
+          id: (request?.findOneServiceRequest.id as string) ?? '',
           data: {
             ...value,
-            status: StatusService.Requested,
-            cRequestId: user?.id,
-            aRequestId: userId as string,
           },
         },
       });
 
       toastIdRef.current = toast({
-        title: 'Solicitação de serviço enviada.',
-        description:
-          'Solicitação de serviço enviada com sucesso, aguarde o arquiteto responder a solicitação',
+        title: 'Solicitação de serviço editada.',
+        description: 'Solicitação de serviço enviada com sucesso!',
         status: 'success',
         duration: 6000,
       });
@@ -114,10 +125,10 @@ export default function CreateRequestService() {
               direction="column"
               onSubmit={handleSubmit(handleSendRequest)}
             >
-              {data && (
+              {architect && (
                 <Box mb="8">
                   <Text fontSize="18">
-                    Para o arquiteto: {data.userById.name}
+                    Para o arquiteto: {architect.userById.name}
                   </Text>
                 </Box>
               )}

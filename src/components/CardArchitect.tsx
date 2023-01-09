@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { IUser } from '../shared/models/user.model';
 
 interface ICardArquitect {
@@ -16,6 +17,7 @@ interface ICardArquitect {
 }
 
 export function CardArquitect({ architect }: ICardArquitect) {
+  const router = useRouter();
   return (
     <Card maxW="sm">
       <CardBody>
@@ -31,7 +33,13 @@ export function CardArquitect({ architect }: ICardArquitect) {
       </CardBody>
       <Divider />
       <CardFooter display="flex" justify="flex-end">
-        <Button variant="solid" colorScheme="blue">
+        <Button
+          variant="solid"
+          colorScheme="blue"
+          onClick={() =>
+            router.replace(`/client/request/create/${architect.id}`)
+          }
+        >
           Solictar serviço
         </Button>
       </CardFooter>

@@ -14,7 +14,12 @@ export default function Home() {
     }
 
     if (user) {
-      router.replace('dashboard');
+      if (user.role === Role.Client) {
+        router.replace('/client/dashboard');
+      }
+      if (user.role === Role.Architect) {
+        router.replace('/architect/');
+      }
     } else {
       router.replace('/login');
     }

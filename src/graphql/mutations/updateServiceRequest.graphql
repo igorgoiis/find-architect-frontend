@@ -1,0 +1,13 @@
+mutation UpdateServiceRequest ($id: String! $data: UpdateServiceRequestInput!){
+  updateServiceRequest(
+  id: $id
+  data: $data
+  ){
+    id
+    title
+    description
+    status
+    cRequestId
+    aRequestId
+  }
+}

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import {
-  GetUserByIdDocument,
   useCreateUserMutation,
   useGetUserByIdQuery,
   useLoginMutation,
