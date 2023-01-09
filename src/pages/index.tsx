@@ -20,6 +20,7 @@ export default function Home() {
         router.replace('/architect/');
       }
     } else {
+      console.log('é aqui');
       router.replace('/login');
     }
 

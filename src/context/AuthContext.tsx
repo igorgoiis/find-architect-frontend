@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useRef, useState } from 'react';
 import {
   useCreateUserMutation,
   useGetUserByIdQuery,
@@ -42,6 +42,7 @@ function AuthProvider({ children }: Props) {
 
   // ** Hooks
   const router = useRouter();
+  const refIsFirst = useRef(true);
   const [login] = useLoginMutation({
     onCompleted({ login }) {
       localStorage.setItem('@user:token', login.token);
@@ -73,13 +74,17 @@ function AuthProvider({ children }: Props) {
           setUser(null);
           localStorage.removeItem('@user:token');
           localStorage.removeItem('@user:id');
-          router.replace('/');
         }
       } catch (error) {
         setUser(null);
         localStorage.removeItem('@user:token');
         localStorage.removeItem('@user:id');
-        router.replace('/');
+        if (refIsFirst.current) {
+          console.log('Chamou');
+
+          router.replace('/login');
+          refIsFirst.current = false;
+        }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

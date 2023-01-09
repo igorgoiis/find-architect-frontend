@@ -26,7 +26,6 @@ import React, { useState } from 'react';
 import { Gender } from '../../shared/models/enums/gender.enum';
 import { Role } from '../../shared/models/enums/roles.enum';
 import { maskPhone } from '../../utils/masks';
-import { useRouter } from 'next/router';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import { ptBR } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -64,7 +63,6 @@ registerLocale('pt-BR', ptBR);
 setDefaultLocale('pt-BR');
 
 function Register() {
-  const router = useRouter();
   const { register: singUp } = useAuth();
   const toast = useToast();
   const toastIdRef = React.useRef<ToastId>();
@@ -93,13 +91,9 @@ function Register() {
           title: 'Sua conta foi criada.',
           description: 'Você será redirecionado para pagina de login.',
           status: 'success',
+          duration: 3000,
+          isClosable: true,
         });
-        setTimeout(() => {
-          if (toastIdRef.current) {
-            toast.close(toastIdRef.current);
-          }
-          router.replace('/login');
-        }, 3000);
       },
       (err) => {
         if (err.message === 'This email already exists.') {

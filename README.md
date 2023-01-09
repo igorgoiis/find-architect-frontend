@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>Find Architect</h1>
 
-## Getting Started
+<div style="display: flex">
+  <img src="/public/images/login.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/register.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/architect-list.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/list-service.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/analise-service.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/edite-request.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/request-list.png" height="500px" alt="Imagem da tela">
+  <img src="/public/images/request-service.png" height="500px" alt="Imagem da tela">
+</div>
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
+> #### Este aplicativo web foi desenvolvido para o teste técnico. No sistema o cliente que faz o  cadastro e a autenticação, depois disso ele tem uma lista de arquitetos cadastrados na plataforma para escolher um e enviar uma solicitação de serviço. O arquiteto  também se cadastra no sistema, faz a authenticação e tem um painel com as solicitções de serviços que os cliente fizeram. Ele pode mudar o status da solicitação(Solicitada, Aceita e Rejeitada) excluir.
+
+<br>
+
+## 🛠 &nbsp;Tech Stack
+![React](https://img.shields.io/badge/-React-05122A?style=flat&logo=react)&nbsp;
+![NextJS](https://img.shields.io/badge/-NextJS-05122A?style=flat&logo=next.js)&nbsp;
+![TypeScript](https://img.shields.io/badge/-TypeScript-05122A?style=flat&logo=typescript)&nbsp;
+![Chakra UI](https://img.shields.io/badge/-Chakra%20UI-05122A?style=flat&logo=chakraui)&nbsp;
+![Apollo Client](https://img.shields.io/badge/-Apollo%20Client-05122A?style=flat&logo=apollo)&nbsp;
+![GraphQL](https://img.shields.io/badge/-GraphQL-05122A?style=flat&logo=graphql)&nbsp;
+![EsLint](https://img.shields.io/badge/-EsLint-05122A?style=flat&logo=eslint)&nbsp;
+![Prettier](https://img.shields.io/badge/-Prettier-05122A?style=flat&logo=prettier)&nbsp;
+![Yarn](https://img.shields.io/badge/-Yarn-05122A?style=flat&logo=yarn)&nbsp;
+![Git](https://img.shields.io/badge/-Git-05122A?style=flat&logo=git)&nbsp;
+![GitHub](https://img.shields.io/badge/-GitHub-05122A?style=flat&logo=github)&nbsp;
+![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=007ACC)&nbsp;
+
+<br>
+
+## 💻 Pré-requisitos
+
+<!---Estes são apenas requisitos de exemplo. Adicionar, duplicar ou remover conforme necessário--->
+* Para rodar o projeto você precisará ter o nodejs instalado
+* O backend desse projeto está no link aqui
+
+## 🚀 Instalando
+
+Para instalar o Find Architect siga estas etapas:
+
+- Clone o projeto:
+```
+git clone https://github.com/igorgoiis/find-architect-frontend.git
+```
+- Entre na pasta e instale as dependências
+```
+cd ./find-architect-frontend && yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Inicie o projeto
+```
+yarn dev
+```
+- Acesso http://localhost:3333/ no seu navegador.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[⬆ Voltar ao topo](#-find-architect-frontend)<br>
