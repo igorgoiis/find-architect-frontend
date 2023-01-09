@@ -84,12 +84,20 @@ export default function CreateRequestService() {
         description:
           'Solicitação de serviço enviada com sucesso, aguarde o arquiteto responder a solicitação',
         status: 'success',
-        duration: 6000,
+        duration: 3000,
+        isClosable: true,
       });
 
       router.back();
     } catch (error) {
-      console.log({ error });
+      toastIdRef.current = toast({
+        title: 'Falha ao enviar a solicitação de serviço.',
+        description:
+          'O envio da sua solicitação falhou, por favor tente novamente mais tarde.',
+        status: 'error',
+        duration: 7000,
+        isClosable: true,
+      });
     }
   };
 

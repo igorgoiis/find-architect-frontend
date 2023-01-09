@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Spinner } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Spinner, Text } from '@chakra-ui/react';
 import Head from 'next/head';
 import { CardRequestServiceView } from '../../components/CardRequestServiceView';
 import { Header } from '../../components/Header';
@@ -26,7 +26,7 @@ export default function ArchitectHome() {
             <Flex flex="1" justify="center" align="center">
               <Spinner size="xl" color="blue.400" thickness="1.5px" />
             </Flex>
-          ) : (
+          ) : data?.findAllServiceRequest?.length ? (
             <SimpleGrid
               flex="1"
               gap="8"
@@ -38,6 +38,10 @@ export default function ArchitectHome() {
                 <CardRequestServiceView key={request.id} request={request} />
               ))}
             </SimpleGrid>
+          ) : (
+            <Flex flex="1" justify="center" color="gray.500" fontSize="20">
+              <Text>Não encontramos nenhuma solicitação de serviço.</Text>
+            </Flex>
           )}
         </Flex>
       </Flex>
