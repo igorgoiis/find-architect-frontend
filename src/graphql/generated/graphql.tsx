@@ -181,6 +181,13 @@ export type User = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type CreateServiceRequestMutationVariables = Exact<{
+  data: CreateServiceRequestInput;
+}>;
+
+
+export type CreateServiceRequestMutation = { __typename?: 'Mutation', createServiceRequest: { __typename?: 'ServiceRequest', id: string, title: string, description: string, status: StatusService, cRequestId?: string | null, aRequestId?: string | null } };
+
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -215,6 +222,44 @@ export type GetUserByRoleQueryVariables = Exact<{
 export type GetUserByRoleQuery = { __typename?: 'Query', userByRole: Array<{ __typename?: 'User', id: string, name: string, bio: string }> };
 
 
+export const CreateServiceRequestDocument = gql`
+    mutation CreateServiceRequest($data: CreateServiceRequestInput!) {
+  createServiceRequest(data: $data) {
+    id
+    title
+    description
+    status
+    cRequestId
+    aRequestId
+  }
+}
+    `;
+export type CreateServiceRequestMutationFn = Apollo.MutationFunction<CreateServiceRequestMutation, CreateServiceRequestMutationVariables>;
+
+/**
+ * __useCreateServiceRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateServiceRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateServiceRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createServiceRequestMutation, { data, loading, error }] = useCreateServiceRequestMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateServiceRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateServiceRequestMutation, CreateServiceRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateServiceRequestMutation, CreateServiceRequestMutationVariables>(CreateServiceRequestDocument, options);
+      }
+export type CreateServiceRequestMutationHookResult = ReturnType<typeof useCreateServiceRequestMutation>;
+export type CreateServiceRequestMutationResult = Apollo.MutationResult<CreateServiceRequestMutation>;
+export type CreateServiceRequestMutationOptions = Apollo.BaseMutationOptions<CreateServiceRequestMutation, CreateServiceRequestMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {

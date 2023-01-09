@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import {
+  GetUserByIdDocument,
   useCreateUserMutation,
+  useGetUserByIdQuery,
   useLoginMutation,
 } from '../graphql/generated/graphql';
 import { IUser } from '../shared/models/user.model';
@@ -44,9 +46,41 @@ function AuthProvider({ children }: Props) {
   const [login] = useLoginMutation({
     onCompleted({ login }) {
       localStorage.setItem('@user:token', login.token);
+      localStorage.setItem('@user:id', login.user.id);
     },
   });
+  const { refetch } = useGetUserByIdQuery({
+    variables: { id: '' },
+    refetchWritePolicy: 'overwrite',
+  });
   const [createUser] = useCreateUserMutation();
+
+  useEffect(() => {
+    (async () => {
+      console.log('Ta chamando');
+
+      const token = localStorage.getItem('@user:token');
+      const id = localStorage.getItem('@user:id');
+      try {
+        if (token && id) {
+          const newUser = await refetch({ id });
+          setUser(newUser.data.userById);
+        } else {
+          setUser(null);
+          localStorage.removeItem('@user:token');
+          localStorage.removeItem('@user:id');
+        }
+      } catch (error) {
+        setUser(null);
+        localStorage.removeItem('@user:token');
+        localStorage.removeItem('@user:id');
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log({ user });
+  }, [user]);
 
   const handleLogin = async (
     params: LoginParams,

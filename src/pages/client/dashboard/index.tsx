@@ -1,9 +1,12 @@
 import { Flex, SimpleGrid, Spinner, Text } from '@chakra-ui/react';
 import Head from 'next/head';
-import { CardArquitect } from '../../components/CardArchitect';
-import { Header } from '../../components/Header';
-import { Sidebar } from '../../components/Sidebar';
-import { Role, useGetUserByRoleQuery } from '../../graphql/generated/graphql';
+import { CardArquitect } from '../../../components/CardArchitect';
+import { Header } from '../../../components/Header';
+import { Sidebar } from '../../../components/Sidebar';
+import {
+  Role,
+  useGetUserByRoleQuery,
+} from '../../../graphql/generated/graphql';
 
 export default function Dashboard() {
   const { data, loading } = useGetUserByRoleQuery({

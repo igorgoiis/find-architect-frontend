@@ -13,8 +13,10 @@ export default function Home() {
       return;
     }
 
-    if (user && user.role === Role.Client) {
+    if (user) {
       router.replace('dashboard');
+    } else {
+      router.replace('/login');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

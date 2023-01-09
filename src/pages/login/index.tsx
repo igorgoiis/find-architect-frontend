@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '../../hooks/useAuth';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 type SignInFormData = {
   email: string;
@@ -33,6 +34,7 @@ const signInFormSchema = yup.object().shape({
 
 function Login() {
   const { login } = useAuth();
+  const router = useRouter();
 
   const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
 
@@ -50,8 +52,8 @@ function Login() {
     login(
       value,
       () => {
-        console.log('Logou');
         setAlertErrorIsOpen(false);
+        router.replace('/');
       },
       () => {
         setError('email', { type: 'manual' });
