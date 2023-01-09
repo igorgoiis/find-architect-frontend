@@ -27,7 +27,16 @@ export type AuthModel = {
   user: User;
 };
 
+export type CreateServiceRequestInput = {
+  aRequestId?: InputMaybe<Scalars['String']>;
+  cRequestId?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  status: StatusService;
+  title: Scalars['String'];
+};
+
 export type CreateUserInput = {
+  bio: Scalars['String'];
   birdDate: Scalars['DateTime'];
   email: Scalars['String'];
   gender: Gender;
@@ -44,10 +53,18 @@ export enum Gender {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createServiceRequest: ServiceRequest;
   createUser: User;
   deleteUser: Scalars['Boolean'];
   login: AuthModel;
+  removeServiceRequest: ServiceRequest;
+  updateServiceRequest: ServiceRequest;
   updateUser: User;
+};
+
+
+export type MutationCreateServiceRequestArgs = {
+  data: CreateServiceRequestInput;
 };
 
 
@@ -66,6 +83,17 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationRemoveServiceRequestArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateServiceRequestArgs = {
+  data: UpdateServiceRequestInput;
+  id: Scalars['String'];
+};
+
+
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
   id: Scalars['String'];
@@ -73,10 +101,17 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  findAllServiceRequest: Array<ServiceRequest>;
+  findOneServiceRequest: ServiceRequest;
   userByEmail: User;
   userById: User;
   userByRole: Array<User>;
   users: Array<User>;
+};
+
+
+export type QueryFindOneServiceRequestArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -99,17 +134,41 @@ export enum Role {
   Client = 'CLIENT'
 }
 
+export type ServiceRequest = {
+  __typename?: 'ServiceRequest';
+  aRequestId?: Maybe<Scalars['String']>;
+  cRequestId?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  status: StatusService;
+  title: Scalars['String'];
+};
+
+export enum StatusService {
+  Accepted = 'ACCEPTED',
+  Declined = 'DECLINED',
+  Requested = 'REQUESTED'
+}
+
+export type UpdateServiceRequestInput = {
+  description: Scalars['String'];
+  status: StatusService;
+  title: Scalars['String'];
+};
+
 export type UpdateUserInput = {
+  bio?: InputMaybe<Scalars['String']>;
   birdDate?: InputMaybe<Scalars['DateTime']>;
   gender?: InputMaybe<Gender>;
   name?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
+  password?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<Role>;
 };
 
 export type User = {
   __typename?: 'User';
+  bio: Scalars['String'];
   birdDate: Scalars['DateTime'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
@@ -136,12 +195,24 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthModel', token: string, user: { __typename?: 'User', id: string, name: string, email: string, phone: string, role: Role, gender: Gender, birdDate: any, createdAt: any, updatedAt: any } } };
 
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string }> };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'Query', userById: { __typename?: 'User', id: string, name: string, bio: string, email: string, phone: string, gender: Gender, role: Role, birdDate: any, createdAt: any, updatedAt: any } };
+
 export type GetUserByRoleQueryVariables = Exact<{
   role: Scalars['String'];
 }>;
 
 
-export type GetUserByRoleQuery = { __typename?: 'Query', userByRole: Array<{ __typename?: 'User', id: string, name: string }> };
+export type GetUserByRoleQuery = { __typename?: 'Query', userByRole: Array<{ __typename?: 'User', id: string, name: string, bio: string }> };
 
 
 export const CreateUserDocument = gql`
@@ -221,11 +292,90 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const GetAllUsersDocument = gql`
+    query GetAllUsers {
+  users {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, options);
+      }
+export function useGetAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, options);
+        }
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
+export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export const GetUserByIdDocument = gql`
+    query getUserById($id: String!) {
+  userById(id: $id) {
+    id
+    name
+    bio
+    email
+    phone
+    gender
+    role
+    birdDate
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+      }
+export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
+export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const GetUserByRoleDocument = gql`
     query getUserByRole($role: String!) {
   userByRole(role: $role) {
     id
     name
+    bio
   }
 }
     `;

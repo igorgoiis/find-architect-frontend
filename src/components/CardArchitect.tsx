@@ -26,11 +26,7 @@ export function CardArquitect({ architect }: ICardArquitect) {
         /> */}
         <Stack spacing="3">
           <Heading size="md">{architect.name}</Heading>
-          <Text>
-            This sofa is perfect for modern tropical spaces, baroque inspired
-            spaces, earthy toned spaces and for people who love a chic design
-            with a sprinkle of vintage design.
-          </Text>
+          <Text>{architect.bio}</Text>
         </Stack>
       </CardBody>
       <Divider />

@@ -1,23 +1,21 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-
-export const getHomeRoute = () => {
-  return '/login';
-  // if (role === UserRoleType.ROLE_CLIENTE) return '/dashboard';
-  // else return '/dashboard';
-};
+import { useAuth } from '../hooks/useAuth';
+import { Role } from '../shared/models/enums/roles.enum';
 
 export default function Home() {
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
-    const homeRoute = getHomeRoute();
 
-    router.replace(homeRoute);
+    if (user && user.role === Role.Client) {
+      router.replace('dashboard');
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

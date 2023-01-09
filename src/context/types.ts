@@ -14,6 +14,7 @@ export type LoginParams = {
 export type RegisterParams = {
   email: string;
   name: string;
+  bio: string;
   phone: string;
   gender: Gender;
   birdDate: Date;
@@ -22,8 +23,8 @@ export type RegisterParams = {
 };
 
 export type AuthValuesType = {
-  // loading: boolean;
-  // setLoading: (value: boolean) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
   isInitialized: boolean;
   setIsInitialized: (value: boolean) => void;
   user: IUser | null;

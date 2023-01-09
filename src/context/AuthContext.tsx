@@ -20,8 +20,8 @@ type Props = {
 const defaultProvider: AuthValuesType = {
   user: null,
   setUser: () => null,
-  // loading: true,
-  // setLoading: () => Boolean,
+  loading: true,
+  setLoading: () => Boolean,
   isInitialized: false,
   setIsInitialized: () => Boolean,
   login: () => Promise.resolve(),
@@ -34,7 +34,7 @@ const AuthContext = createContext(defaultProvider);
 function AuthProvider({ children }: Props) {
   // ** States
   const [user, setUser] = useState<IUser | null>(defaultProvider.user);
-  // const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
+  const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
   const [isInitialized, setIsInitialized] = useState<boolean>(
     defaultProvider.isInitialized,
   );
@@ -102,6 +102,8 @@ function AuthProvider({ children }: Props) {
   const values = {
     user,
     setUser,
+    loading,
+    setLoading,
     isInitialized,
     setIsInitialized,
     login: handleLogin,

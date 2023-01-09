@@ -4,6 +4,7 @@ import { Role } from './enums/roles.enum';
 export interface IUser {
   id?: string;
   email?: string;
+  bio?: string;
   password?: string;
   name?: string;
   phone?: string;

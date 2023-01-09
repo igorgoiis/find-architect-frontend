@@ -12,6 +12,8 @@ import {
   Stack,
   useToast,
   ToastId,
+  FormControl,
+  Textarea,
 } from '@chakra-ui/react';
 import Head from 'next/head';
 import { Input } from '../../components/Form/Input';
@@ -32,6 +34,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 type RegisterFormData = {
   email: string;
   name: string;
+  bio: string;
   phone: string;
   gender: Gender;
   birdDate: Date;
@@ -43,6 +46,7 @@ type RegisterFormData = {
 const registerFormSchema = yup.object().shape({
   email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
   name: yup.string().required('Nome é obrigatório'),
+  bio: yup.string().required('Sobre é obrigatório.'),
   phone: yup.string().required('Telefone é obrigatório'),
   birdDate: yup.date().required('Data de nascimento é obrigatória'),
   password: yup
@@ -79,10 +83,10 @@ function Register() {
 
   const handleRegister: SubmitHandler<RegisterFormData> = (value, e) => {
     e?.preventDefault();
-    const { email, name, phone, gender, role, birdDate, password } = value;
+    const { email, name, bio, phone, gender, role, birdDate, password } = value;
 
     singUp(
-      { email, name, phone, gender, role, birdDate, password },
+      { email, name, bio, phone, gender, role, birdDate, password },
       () => {
         setAlertErrorIsOpen(false);
         toastIdRef.current = toast({
@@ -148,6 +152,17 @@ function Register() {
               placeholder="Seu nome"
               {...register('name')}
             />
+
+            <FormControl>
+              <FormLabel htmlFor="bio">Sobre</FormLabel>
+              <Textarea
+                id="bio"
+                placeholder="Fale um pouco sobre você"
+                size="lg"
+                {...register('bio')}
+              />
+            </FormControl>
+
             <Controller
               control={control}
               name="phone"
