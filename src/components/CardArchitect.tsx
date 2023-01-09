@@ -5,7 +5,6 @@ import {
   CardFooter,
   Divider,
   Heading,
-  Image,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -21,11 +20,6 @@ export function CardArquitect({ architect }: ICardArquitect) {
   return (
     <Card maxW="sm">
       <CardBody>
-        {/* <Image
-          src="https://github.com/igorgoiis.png"
-          alt="Green double couch with wooden legs"
-          borderRadius="lg"
-        /> */}
         <Stack spacing="3">
           <Heading size="md">{architect.name}</Heading>
           <Text>{architect.bio}</Text>

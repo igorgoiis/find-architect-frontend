@@ -13,8 +13,6 @@ export default function Dashboard() {
     variables: { role: Role.Architect },
   });
 
-  console.log({ data, loading });
-
   return (
     <>
       <Head>
