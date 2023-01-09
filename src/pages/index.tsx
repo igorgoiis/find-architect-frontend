@@ -13,7 +13,6 @@ export default function Home() {
     }
 
     if (user !== null) {
-      console.log('Entrou no index');
       if (user.role === Role.Client) {
         router.replace('/client/architect');
       }

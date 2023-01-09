@@ -4,15 +4,18 @@ import theme from '../styles/theme';
 import { AuthProvider } from '../context/AuthContext';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClient } from '../lib/apolloClient';
+import { SidebarDrawerProvider } from '../context/SidebarDrawerContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <ApolloProvider client={getApolloClient(pageProps.apolloState)}>
-        <AuthProvider>
-          <Component {...pageProps} />
-        </AuthProvider>
-      </ApolloProvider>
+      <SidebarDrawerProvider>
+        <ApolloProvider client={getApolloClient(pageProps.apolloState)}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </ApolloProvider>
+      </SidebarDrawerProvider>
     </ChakraProvider>
   );
 }

@@ -8,7 +8,7 @@ import {
   useGetUserByRoleQuery,
 } from '../../../graphql/generated/graphql';
 
-export default function Dashboard() {
+export default function ArchitectList() {
   const { data, loading } = useGetUserByRoleQuery({
     variables: { role: Role.Architect },
   });

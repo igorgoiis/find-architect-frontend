@@ -8,12 +8,15 @@ import {
   MenuList,
   Text,
   Menu as MenuChakra,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { useAuth } from '../../hooks/useAuth';
 
 export function Menu() {
   const { logout, user } = useAuth();
+
+  const isWideVersion = useBreakpointValue({ base: false, lg: true });
 
   return (
     <Flex>
@@ -28,10 +31,12 @@ export function Menu() {
           _expanded={{ bgColor: 'gray.700' }}
         >
           <Flex align="center">
-            <Box mr="4" textAlign="right">
-              <Text>{user?.name}</Text>
-              <Text color="gray.300">{user?.email}</Text>
-            </Box>
+            {isWideVersion && (
+              <Box mr="4" textAlign="right">
+                <Text>{user?.name}</Text>
+                <Text color="gray.300">{user?.email}</Text>
+              </Box>
+            )}
             <Avatar size="md" name={user?.name} />
           </Flex>
         </MenuButton>

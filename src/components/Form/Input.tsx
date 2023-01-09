@@ -11,7 +11,7 @@ import { forwardRef, ForwardRefRenderFunction } from 'react';
 interface IInputProps extends ChakraInputProps {
   name: string;
   label?: string;
-  error: FieldError;
+  error?: FieldError;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, IInputProps> = (

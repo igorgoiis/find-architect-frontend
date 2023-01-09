@@ -55,10 +55,8 @@ function AuthProvider({ children }: Props) {
   const [createUser] = useCreateUserMutation();
 
   useEffect(() => {
-    console.log({ user, isInitialized });
     if (user && !isInitialized) {
       setIsInitialized(true);
-      console.log('redirecionou');
       router.replace('/');
     }
   }, [user, isInitialized, router]);
@@ -75,23 +73,17 @@ function AuthProvider({ children }: Props) {
           setUser(null);
           localStorage.removeItem('@user:token');
           localStorage.removeItem('@user:id');
-          console.log('redirecionou no else');
           router.replace('/');
         }
       } catch (error) {
         setUser(null);
         localStorage.removeItem('@user:token');
         localStorage.removeItem('@user:id');
-        console.log('redirecionou no outro else');
         router.replace('/');
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log({ user });
-  }, [user]);
 
   const handleLogin = async (
     params: LoginParams,

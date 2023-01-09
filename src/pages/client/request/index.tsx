@@ -1,5 +1,4 @@
 import {
-  Badge,
   Flex,
   Table,
   TableContainer,
@@ -21,16 +20,16 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
-import { Header } from '../../components/Header';
-import { Sidebar } from '../../components/Sidebar';
+import { BadgeStatus } from '../../../components/BadgeStatus';
+import { Header } from '../../../components/Header';
+import { Sidebar } from '../../../components/Sidebar';
 import {
-  StatusService,
   useDeleteServiceRequestMutation,
   useGetAllServiceRequestQuery,
   useGetUserByIdQuery,
-} from '../../graphql/generated/graphql';
-import { useAuth } from '../../hooks/useAuth';
-import { IUser } from '../../shared/models/user.model';
+} from '../../../graphql/generated/graphql';
+import { useAuth } from '../../../hooks/useAuth';
+import { IUser } from '../../../shared/models/user.model';
 
 export default function ListRequestService() {
   const [architects, setArchitects] = useState<IUser[]>([]);
@@ -64,30 +63,6 @@ export default function ListRequestService() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [called, loading]);
-
-  function renderStatus(status: StatusService) {
-    const colorScheme =
-      status === StatusService.Requested
-        ? 'yellow'
-        : status === StatusService.Accepted
-        ? 'green'
-        : 'red';
-    return (
-      <Badge
-        ml="1"
-        px="2"
-        py="1"
-        fontSize="16"
-        fontWeight={400}
-        colorScheme={colorScheme}
-        textTransform="capitalize"
-      >
-        {status === StatusService.Requested && 'Solicitada'}
-        {status === StatusService.Accepted && 'Aceita'}
-        {status === StatusService.Declined && 'Recusada'}
-      </Badge>
-    );
-  }
 
   function renderAlertDialog() {
     return (
@@ -175,7 +150,9 @@ export default function ListRequestService() {
                     <Tr key={request.id}>
                       <Td>{request.title}</Td>
                       <Td>{request.description}</Td>
-                      <Td>{renderStatus(request.status)}</Td>
+                      <Td>
+                        <BadgeStatus status={request.status} />
+                      </Td>
                       <Td>
                         {
                           architects.find(
